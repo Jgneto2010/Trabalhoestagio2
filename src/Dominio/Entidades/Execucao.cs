@@ -10,6 +10,6 @@ namespace Dominio.Entidades
         public Status Status { get;  set; }
         public string Log { get; set; }
 
-        public Servico Servico { get; set; }
+     
     }
 }

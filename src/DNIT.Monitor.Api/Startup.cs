@@ -27,6 +27,7 @@ namespace DNIT.Monitor.Api
             
             services.AddControllers();
             services.AddScoped<IAplicacaoRepositorio, AplicacaoRepositorio>();
+            services.AddScoped<IServicoRepositorio, ServicoRepositorio>();
 
             //services.AddDbContext<MonitorContext>(option =>
             //option.UseSqlServer(Configuration.GetConnectionString("conn")));

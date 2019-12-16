@@ -1,7 +1,7 @@
 ﻿using DNIT.Monitor.Api.Models;
 using Dominio.Entidades;
 using Dominio.Interfaces;
-
+using Infra.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -82,6 +82,31 @@ namespace DNIT.Monitor.Api.Controllers
             return Created($"api/aplicacao/{servico.Id}", new { servico.Id, servico.Nome });
         }
 
-        
+
+        [HttpPost("{idServico:Guid}/addExecucao")]
+        public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, Guid idServico, [FromBody]AddExecucaoModel execucaoModel)
+        {
+            //Aqui uma condição a qual só se cria um serviço se haver um Id de Aplicação
+            //Aqui a função ANY criada no repositorio e na Interface
+            //Retorna O Id do serviço e Nome
+            //if (!await repositorio.Any(idServico))
+            //{
+            //    return NotFound();
+            //}
+
+            var execucao = new Execucao();
+            execucao.DataInicio = execucaoModel.DataInicio;
+            execucao.DataFim = execucaoModel.DataFim;
+            execucao.Log = execucaoModel.Log;
+            execucao.Status = execucaoModel.Status;
+            execucao.IdServico = idServico;
+
+            await repositorio.AddExecucao(idServico, execucao);
+
+            await repositorio.SaveChanges();
+            return Created($"api/aplicacao/{execucao.Id}", new { execucao.Id, execucao.Log, execucao.Status });
+        }
+
+
     }
 }
