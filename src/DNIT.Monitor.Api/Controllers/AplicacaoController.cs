@@ -59,6 +59,7 @@ namespace DNIT.Monitor.Api.Controllers
             await repositorio.Add(aplicacao);
             await repositorio.SaveChanges();
             return Created($"api/aplicacao/{aplicacao.Id}", new { aplicacao.Id, aplicacao.Nome});
+
         }
 
         
@@ -83,12 +84,11 @@ namespace DNIT.Monitor.Api.Controllers
         }
 
 
+        //Aqui um metodo que cria uma execução dado Id de um serviço
         [HttpPost("{idServico:Guid}/addExecucao")]
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, Guid idServico, [FromBody]AddExecucaoModel execucaoModel)
         {
-            //Aqui uma condição a qual só se cria um serviço se haver um Id de Aplicação
-            //Aqui a função ANY criada no repositorio e na Interface
-            //Retorna O Id do serviço e Nome
+            
             //if (!await repositorio.Any(idServico))
             //{
             //    return NotFound();
@@ -104,7 +104,7 @@ namespace DNIT.Monitor.Api.Controllers
             await repositorio.AddExecucao(idServico, execucao);
 
             await repositorio.SaveChanges();
-            return Created($"api/aplicacao/{execucao.Id}", new { execucao.Id, execucao.Log, execucao.Status });
+            return Created($"api/aplicacao/servico/{execucao.Id}", new { execucao.Id, execucao.Log, execucao.Status });
         }
 
 

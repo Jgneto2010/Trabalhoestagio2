@@ -34,8 +34,8 @@ namespace Infra.Maps
             builder.Property(x => x.IdServico)
                 .HasColumnName("ID_SERVICO");
 
-            //builder.HasOne(x => x.Servico)
-            //    .WithMany(x => x.Execucoes)
+            //builder.HasOne(x => x.Execucao)
+            //    .WithMany(x => x.Servico)
             //    .HasForeignKey(x => x.IdServico)
             //    .IsRequired();
         }

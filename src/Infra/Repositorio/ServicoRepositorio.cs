@@ -19,15 +19,15 @@ namespace Infra.Repositorio
 
         }
 
+
         //Esse metodo traz a lista de execuçoes contidas em serviços
         public async Task AddExecucao(Guid idServico, Execucao execucao)
         {
             //Aqui está indo no banco trazendo o objeto serviço
             var result = await DbSet.FirstOrDefaultAsync(x => x.Id == idServico);
-            result.Execucoes = new List<Execucao>();
+            execucao.Servico = result;
             //Aqui ele insere uma execução na lista de execuçoes contidas no Serviço
-            result.Execucoes.Add(execucao);
-            _contexto.Servico.Update(result);
+            _contexto.Execucao.Add(execucao);
             await _contexto.SaveChangesAsync();
         }
     }
