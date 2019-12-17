@@ -18,6 +18,10 @@ namespace Infra.Repositorio
             _contexto = contexto;
 
         }
+        public Task<bool> Any(Guid id)
+        {
+            return DbSet.AnyAsync(x => x.Id == id);
+        }
 
 
         //Esse metodo traz a lista de execuçoes contidas em serviços
