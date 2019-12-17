@@ -9,5 +9,6 @@ namespace Dominio.Interfaces
     public interface IServicoRepositorio : IRepositorio<Servico>
     {
         Task AddExecucao(Guid idServico, Execucao execucao);
+        Task<bool> Any(Guid id);
     }
 }

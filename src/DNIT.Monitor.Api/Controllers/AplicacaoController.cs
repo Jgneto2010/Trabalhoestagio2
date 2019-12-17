@@ -89,10 +89,10 @@ namespace DNIT.Monitor.Api.Controllers
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, Guid idServico, [FromBody]AddExecucaoModel execucaoModel)
         {
             
-            //if (!await repositorio.Any(idServico))
-            //{
-            //    return NotFound();
-            //}
+            if (!await repositorio.Any(idServico))
+            {
+                return NotFound();
+            }
 
             var execucao = new Execucao();
             execucao.DataInicio = execucaoModel.DataInicio;
