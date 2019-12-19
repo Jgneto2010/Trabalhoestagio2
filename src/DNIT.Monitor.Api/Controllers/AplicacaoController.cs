@@ -84,14 +84,25 @@ namespace DNIT.Monitor.Api.Controllers
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/servicos/{servico.Id}/detalhar", new { servico.Id, servico.Nome });
         }
-
+        //implementaçoes
         [HttpGet]
         [Route("servicos/{idServico}/detalhar")]
         public async Task<IActionResult> GetDetailsServico([FromServices] IServicoRepositorio repositorio, [FromRoute]Guid idServico)
         {
-            var result = await repositorio.Detalhar(idServico);
 
-            return Ok(new { result.Nome, result.Id, Aplicacao = result.Aplicacao.Nome });
+            var result = await repositorio.Detalhar(idServico);
+           
+            var exec = new ServicoModelReturn();
+
+
+            exec.NomeAplicacao = result.Aplicacao.Nome;
+            exec.NomeServico = result.Nome;
+            exec.Id = result.Id;
+
+            exec.ListaExecucoes = result.Execucoes;
+            
+
+            return Ok(exec);
         }
 
 

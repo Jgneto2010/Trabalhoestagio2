@@ -30,9 +30,8 @@ namespace Infra.Repositorio
 
         public Task<Servico> Detalhar(Guid idServico)
         {
-            return DbSet.Include(i => i.Aplicacao).FirstOrDefaultAsync(x => x.Id == idServico);
+            return DbSet.Include(i => i.Aplicacao).Include(e => e.Execucoes).FirstOrDefaultAsync(x => x.Id == idServico);
         }
-
 
         //Esse metodo traz a lista de execuçoes contidas em serviços
         public async Task AddExecucao(Guid idServico, Execucao execucao)
