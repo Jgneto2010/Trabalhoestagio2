@@ -23,6 +23,16 @@ namespace Infra.Repositorio
             return DbSet.AnyAsync(x => x.Id == id);
         }
 
+        public Task<bool> Any(string nome)
+        {
+            return DbSet.AnyAsync(x => x.Nome == nome);
+        }
+
+        public Task<Servico> Detalhar(Guid idServico)
+        {
+            return DbSet.Include(i => i.Aplicacao).FirstOrDefaultAsync(x => x.Id == idServico);
+        }
+
 
         //Esse metodo traz a lista de execuçoes contidas em serviços
         public async Task AddExecucao(Guid idServico, Execucao execucao)
@@ -35,5 +45,5 @@ namespace Infra.Repositorio
             await _contexto.SaveChangesAsync();
         }
     }
-    
+
 }

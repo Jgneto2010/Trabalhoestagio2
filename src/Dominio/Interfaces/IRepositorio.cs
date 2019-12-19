@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Dominio.Interfaces
 {
     public interface IRepositorio<T>
-        where T: Entity
+       where T : Entity
     {
         ValueTask<EntityEntry<T>> Add(T obj);
         Task<T> GetById(Guid id);
