@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace DNIT.Monitor.Api.Models
 {
-    public class ServicoModelReturn
+    public class ServicoDetalheModel
     {
-        //result.Nome, result.Id, Aplicacao = result.Aplicacao.Nome, result.Execucoes
 
         public Guid Id { get; set; }
         public string NomeAplicacao { get; set; }
         public string NomeServico { get; set; }
-
-        public ICollection<Execucao> ListaExecucoes { get; set; }
+        
+        public ICollection<ExecucaoModel> ListaExecucoes { get; set; }
 
 
     }

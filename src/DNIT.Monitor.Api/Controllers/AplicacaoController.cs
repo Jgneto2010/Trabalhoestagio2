@@ -84,6 +84,7 @@ namespace DNIT.Monitor.Api.Controllers
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/servicos/{servico.Id}/detalhar", new { servico.Id, servico.Nome });
         }
+        
         //implementaçoes
         [HttpGet]
         [Route("servicos/{idServico}/detalhar")]
@@ -91,16 +92,20 @@ namespace DNIT.Monitor.Api.Controllers
         {
 
             var result = await repositorio.Detalhar(idServico);
-           
-            var exec = new ServicoModelReturn();
+            var exec = new ServicoDetalheModel();
+            var execs = new ExecucaoModel();
+
+            for (int i = 0; i < exec.ListaExecuc; i++)
+            {
+                
+            }
+
 
 
             exec.NomeAplicacao = result.Aplicacao.Nome;
             exec.NomeServico = result.Nome;
             exec.Id = result.Id;
-
             exec.ListaExecucoes = result.Execucoes;
-            
 
             return Ok(exec);
         }

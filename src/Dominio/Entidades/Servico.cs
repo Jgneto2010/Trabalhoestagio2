@@ -13,6 +13,7 @@ namespace Dominio.Entidades
         public string Nome { get;  private set; }
         public Guid IdAplicacao { get; set; }
         public Aplicacao Aplicacao { get; set; }
+        
         public ICollection<Execucao> Execucoes { get; set; }
     }
 }
