@@ -14,7 +14,6 @@ namespace Infra.Contextos
         {
 
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AplicacaoMapping());

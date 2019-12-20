@@ -12,7 +12,5 @@ namespace DNIT.Monitor.Api.Models
         public DateTime DataFim { get; set; }
         public Status Status { get; set; }
         public string Log { get; set; }
-
-        
     }
 }

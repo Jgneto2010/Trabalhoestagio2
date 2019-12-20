@@ -17,8 +17,6 @@ namespace Infra.Maps
                     .HasColumnName("NOME")
                    .HasColumnType("varchar(30)")
                    .IsRequired();
-           
-            
         }
     }
 }

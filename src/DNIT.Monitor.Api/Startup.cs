@@ -18,33 +18,22 @@ namespace DNIT.Monitor.Api
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-
             services.AddControllers();
             services.AddScoped<IAplicacaoRepositorio, AplicacaoRepositorio>();
             services.AddScoped<IServicoRepositorio, ServicoRepositorio>();
-
             //services.AddDbContext<MonitorContext>(option =>
             //option.UseSqlServer(Configuration.GetConnectionString("conn")));
-
             services.AddDbContext<MonitorContext>(option =>
             option.UseInMemoryDatabase("memory"));
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CGPLAN Services Monitor", Version = "v1" });
             });
         }
-
-
-        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -52,14 +41,9 @@ namespace DNIT.Monitor.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -70,8 +54,6 @@ namespace DNIT.Monitor.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CGPLAN Services Monitor V1");
             });
-
-
         }
     }
 }

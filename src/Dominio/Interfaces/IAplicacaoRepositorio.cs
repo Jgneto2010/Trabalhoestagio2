@@ -15,6 +15,5 @@ namespace Dominio.Interfaces
 
         Task<List<TResult>> ListAll<TResult>(Expression<Func<Aplicacao, TResult>> selector);
 
-
     }
 }

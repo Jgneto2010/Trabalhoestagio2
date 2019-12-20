@@ -12,7 +12,6 @@ namespace Infra.Repositorio
     public class ServicoRepositorio : RepositorioBase<Servico>, IRepositorio<Servico>, IServicoRepositorio
     {
         private readonly MonitorContext _contexto;
-
         public ServicoRepositorio(MonitorContext contexto) : base(contexto)
         {
             _contexto = contexto;
@@ -22,17 +21,14 @@ namespace Infra.Repositorio
         {
             return DbSet.AnyAsync(x => x.Id == id);
         }
-
         public Task<bool> Any(string nome)
         {
             return DbSet.AnyAsync(x => x.Nome == nome);
         }
-
         public Task<Servico> Detalhar(Guid idServico)
         {
             return DbSet.Include(i => i.Aplicacao).Include(e => e.Execucoes).FirstOrDefaultAsync(x => x.Id == idServico);
         }
-
         //Esse metodo traz a lista de execuçoes contidas em serviços
         public async Task AddExecucao(Guid idServico, Execucao execucao)
         {

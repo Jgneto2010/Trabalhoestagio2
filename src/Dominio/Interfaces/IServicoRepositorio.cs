@@ -11,8 +11,6 @@ namespace Dominio.Interfaces
         Task AddExecucao(Guid idServico, Execucao execucao);
         Task<bool> Any(Guid id);
         Task<bool> Any(string nome);
-
         Task<Servico> Detalhar(Guid idServico);
-
     }
 }

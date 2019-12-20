@@ -20,9 +20,7 @@ namespace DNIT.Monitor.Api.Models
                 description = descriptionAttribute.Description;
                 break;
             }
-
             return description;
         }
-
     }
 }

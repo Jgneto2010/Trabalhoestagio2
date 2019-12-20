@@ -3,6 +3,5 @@
     public class AddServicoModel
     {
         public string Nome { get; set; }
-
     }
 }

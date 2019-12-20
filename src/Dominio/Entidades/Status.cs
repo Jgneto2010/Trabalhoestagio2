@@ -15,7 +15,6 @@ namespace Dominio.Entidades
         Finalizado = 2,
         [Description("Erro")]
         Erro = 3
-
     }
 
     
