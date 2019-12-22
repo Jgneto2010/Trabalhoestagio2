@@ -68,13 +68,28 @@ namespace DNIT.Monitor.Api.Controllers
         [Route("servicos/{idServico}/detalhar")]
         public async Task<IActionResult> GetDetailsServico([FromServices] IServicoRepositorio repositorio, [FromRoute]Guid idServico)
         {
-            var result = await repositorio.Detalhar(idServico);
-            var exec = new ServicoDetalheModel();
-            exec.NomeAplicacao = result.Aplicacao.Nome;
-            exec.NomeServico = result.Nome;
-            exec.Id = result.Id;
-            exec.ListaExecucoes = result.Execucoes;
-            return Ok(exec);
+            var servicoEntidade = await repositorio.Detalhar(idServico); ///Retorna o serviço do banco com as execuçoões.
+            
+            var servicoDetalheModel = new ServicoDetalheModel();
+            servicoDetalheModel.ListaExecucoes = new List<ExecucaoModel>();
+
+            for (int i = 0; i < servicoEntidade.Execucoes.Count; i++)
+            {
+                var execViewModel = new ExecucaoModel();
+
+                execViewModel.Id = servicoEntidade.Execucoes.ToList()[i].Id;
+                execViewModel.DataInicio = servicoEntidade.Execucoes.ToList()[i].DataInicio;
+                execViewModel.DataFim = servicoEntidade.Execucoes.ToList()[i].DataFim;
+                execViewModel.Log = servicoEntidade.Execucoes.ToList()[i].Log;
+                execViewModel.TextoStatus = Enum.GetName(typeof(Status), servicoEntidade.Execucoes.ToList()[i].Status);
+                servicoDetalheModel.ListaExecucoes.Add(execViewModel);
+            }
+
+            servicoDetalheModel.NomeAplicacao = servicoEntidade.Aplicacao.Nome;
+            servicoDetalheModel.NomeServico = servicoEntidade.Nome;
+            servicoDetalheModel.Id = servicoEntidade.Id;
+
+            return Ok(servicoDetalheModel);
         }
         [HttpPost("{nomeAplicacao}/servicos/{nomeServico}/addExecucao")]
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, [FromServices]IAplicacaoRepositorio aplicacaoRepositorio,

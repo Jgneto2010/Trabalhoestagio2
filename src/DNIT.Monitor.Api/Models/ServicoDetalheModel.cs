@@ -11,6 +11,6 @@ namespace DNIT.Monitor.Api.Models
         public Guid Id { get; set; }
         public string NomeAplicacao { get; set; }
         public string NomeServico { get; set; }
-        public ICollection<Execucao> ListaExecucoes { get; set; }
+        public ICollection<ExecucaoModel> ListaExecucoes { get; set; }
     }
 }
