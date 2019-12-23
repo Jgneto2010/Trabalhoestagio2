@@ -68,23 +68,21 @@ namespace DNIT.Monitor.Api.Controllers
         [Route("servicos/{idServico}/detalhar")]
         public async Task<IActionResult> GetDetailsServico([FromServices] IServicoRepositorio repositorio, [FromRoute]Guid idServico)
         {
-            var servicoEntidade = await repositorio.Detalhar(idServico); ///Retorna o serviço do banco com as execuçoões.
+            var servicoEntidade = await repositorio.Detalhar(idServico); 
             
-            var servicoDetalheModel = new ServicoDetalheModel();
+            var servicoDetalheModel = new ServicoDetalheModel(); 
             servicoDetalheModel.ListaExecucoes = new List<ExecucaoModel>();
 
-            for (int i = 0; i < servicoEntidade.Execucoes.Count; i++)
+            var execucoes = servicoEntidade.Execucoes.Select(execucao => new ExecucaoModel
             {
-                var execViewModel = new ExecucaoModel();
+                Id = execucao.Id,
+                DataInicio = execucao.DataInicio,
+                DataFim = execucao.DataFim,
+                Log = execucao.Log,
+                TextoStatus = Enum.GetName(typeof(Status), execucao.Status)
+            });
 
-                execViewModel.Id = servicoEntidade.Execucoes.ToList()[i].Id;
-                execViewModel.DataInicio = servicoEntidade.Execucoes.ToList()[i].DataInicio;
-                execViewModel.DataFim = servicoEntidade.Execucoes.ToList()[i].DataFim;
-                execViewModel.Log = servicoEntidade.Execucoes.ToList()[i].Log;
-                execViewModel.TextoStatus = Enum.GetName(typeof(Status), servicoEntidade.Execucoes.ToList()[i].Status);
-                servicoDetalheModel.ListaExecucoes.Add(execViewModel);
-            }
-
+            servicoDetalheModel.ListaExecucoes = execucoes.ToList();
             servicoDetalheModel.NomeAplicacao = servicoEntidade.Aplicacao.Nome;
             servicoDetalheModel.NomeServico = servicoEntidade.Nome;
             servicoDetalheModel.Id = servicoEntidade.Id;
@@ -95,6 +93,9 @@ namespace DNIT.Monitor.Api.Controllers
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, [FromServices]IAplicacaoRepositorio aplicacaoRepositorio,
             Guid idServico, string nomeServico, string nomeAplicacao, [FromBody]ExecucaoModel execucaoModel)
         {
+
+           
+            
             if (!await aplicacaoRepositorio.Any(nomeAplicacao))
             {
                 return NotFound();
@@ -105,7 +106,7 @@ namespace DNIT.Monitor.Api.Controllers
             }
             var execucao = new Execucao
             {
-                DataInicio = execucaoModel.DataInicio,
+                DataInicio = DateTime.Now,
                 DataFim = execucaoModel.DataFim,
                 Log = execucaoModel.Log,
                 Status = execucaoModel.Status,
