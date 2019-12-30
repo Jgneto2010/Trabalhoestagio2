@@ -91,7 +91,7 @@ namespace DNIT.Monitor.Api.Controllers
         }
         [HttpPost("{nomeAplicacao}/servicos/{nomeServico}/addExecucao")]
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, [FromServices]IAplicacaoRepositorio aplicacaoRepositorio,
-            Guid idServico, string nomeServico, string nomeAplicacao, [FromBody]ExecucaoModel execucaoModel)
+            Guid idServico, string nomeServico, string nomeAplicacao, [FromBody]AddExecucaoModel addExecucaoModel)
         {
 
            
@@ -107,9 +107,9 @@ namespace DNIT.Monitor.Api.Controllers
             var execucao = new Execucao
             {
                 DataInicio = DateTime.Now,
-                DataFim = execucaoModel.DataFim,
-                Log = execucaoModel.Log,
-                Status = execucaoModel.Status,
+                DataFim = addExecucaoModel.DataFim,
+                Log = addExecucaoModel.Log,
+                Status = addExecucaoModel.Status,
                 IdServico = idServico
             };
             await repositorio.AddExecucao(idServico, execucao);
