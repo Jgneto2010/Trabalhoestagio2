@@ -39,6 +39,11 @@ namespace Infra.Repositorio
             _contexto.Execucao.Add(execucao);
             await _contexto.SaveChangesAsync();
         }
+        public async Task<Guid> GetByName(string nome)
+        {
+            var result = await _contexto.Servico.FirstOrDefaultAsync(x => x.Nome == nome);
+            return result.Id;
+        }
     }
 
 }

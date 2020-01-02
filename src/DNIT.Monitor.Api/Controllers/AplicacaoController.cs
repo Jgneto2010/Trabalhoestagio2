@@ -3,12 +3,12 @@ using Dominio.Entidades;
 using Dominio.Interfaces;
 using Infra.Repositorio;
 using Microsoft.AspNetCore.Mvc;
-using System;                               //-----------------------------------------------------
+using System;                               
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 
 namespace DNIT.Monitor.Api.Controllers
 {
@@ -23,16 +23,15 @@ namespace DNIT.Monitor.Api.Controllers
         {
             var result = await repositorio.Buscar(id);
             if (result == null)
-            {
                 return NotFound();
-            }
+            
             return Ok(new AplicacaoModel()
             {
                 Id = result.Id,
                 Nome = result.Nome,
-                Servicos = result.Servicos.Select(x => new ServicoDetalheModel()
+                Servicos = result.Servicos.Select(x => new ServicoModel()
                 {
-                    NomeServico = x.Nome,
+                    Nome = x.Nome,
                 })
             });
         }
@@ -52,13 +51,12 @@ namespace DNIT.Monitor.Api.Controllers
         }
         
         [HttpPost("{idAplicacao:Guid}/servicos/addServico")]
-        public async Task<IActionResult> Post([FromServices]IAplicacaoRepositorio repositorio, [FromRoute] Guid idAplicacao, [FromBody]AddServicoModel servicomodel)
+        public async Task<IActionResult> Post([FromServices]IAplicacaoRepositorio repositorio, [FromRoute] Guid idAplicacao, [FromBody]AddServicoModel addServicomodel)
         {
             if (!await repositorio.Any(idAplicacao))
-            {
                 return NotFound();
-            }
-            var servico = new Servico(servicomodel.Nome);
+            
+            var servico = new Servico(addServicomodel.Nome);
             await repositorio.AddServico(idAplicacao, servico);
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/servicos/{servico.Id}/detalhar", new { servico.Id, servico.Nome });
@@ -68,10 +66,10 @@ namespace DNIT.Monitor.Api.Controllers
         [Route("servicos/{idServico}/detalhar")]
         public async Task<IActionResult> GetDetailsServico([FromServices] IServicoRepositorio repositorio, [FromRoute]Guid idServico)
         {
-            var servicoEntidade = await repositorio.Detalhar(idServico); 
-            
-            var servicoDetalheModel = new ServicoDetalheModel(); 
-            servicoDetalheModel.ListaExecucoes = new List<ExecucaoModel>();
+            var servicoEntidade = await repositorio.Detalhar(idServico);
+
+            var servicoModel = new ServicoModel();
+            servicoModel.ListaExecucoes = new List<ExecucaoModel>();
 
             var execucoes = servicoEntidade.Execucoes.Select(execucao => new ExecucaoModel
             {
@@ -81,41 +79,37 @@ namespace DNIT.Monitor.Api.Controllers
                 Log = execucao.Log,
                 TextoStatus = Enum.GetName(typeof(Status), execucao.Status)
             });
+            servicoModel.ListaExecucoes = execucoes.ToList();
+            servicoModel.NomeAplicacao = servicoEntidade.Aplicacao.Nome;
+            servicoModel.Nome = servicoEntidade.Nome;
+            servicoModel.Id = servicoEntidade.Id;
 
-            servicoDetalheModel.ListaExecucoes = execucoes.ToList();
-            servicoDetalheModel.NomeAplicacao = servicoEntidade.Aplicacao.Nome;
-            servicoDetalheModel.NomeServico = servicoEntidade.Nome;
-            servicoDetalheModel.Id = servicoEntidade.Id;
-
-            return Ok(servicoDetalheModel);
+            return Ok(servicoModel);
         }
+    
         [HttpPost("{nomeAplicacao}/servicos/{nomeServico}/addExecucao")]
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, [FromServices]IAplicacaoRepositorio aplicacaoRepositorio,
-            Guid idServico, string nomeServico, string nomeAplicacao, [FromBody]AddExecucaoModel addExecucaoModel)
+             string nomeServico, string nomeAplicacao, [FromBody]AddExecucaoModel addExecucaoModel)
         {
-
-           
-            
             if (!await aplicacaoRepositorio.Any(nomeAplicacao))
-            {
                 return NotFound();
-            }
+            
             if (!await repositorio.Any(nomeServico))
-            {
                 return NotFound();
-            }
+
             var execucao = new Execucao
             {
                 DataInicio = DateTime.Now,
                 DataFim = addExecucaoModel.DataFim,
                 Log = addExecucaoModel.Log,
                 Status = addExecucaoModel.Status,
-                IdServico = idServico
+                IdServico = repositorio.GetByName(nomeServico).Result
             };
-            await repositorio.AddExecucao(idServico, execucao);
+            await repositorio.AddExecucao(repositorio.GetByName(nomeServico).Result, execucao);
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/{nomeAplicacao}/servicos/{nomeServico}/execucoes/{execucao.Id}",
                 new { execucao.Id, execucao.Log, execucao.Status, execucao.DataInicio, execucao.DataFim });
         }
     }
 }
+

@@ -9,11 +9,7 @@ namespace Infra.Contextos
         public DbSet<Aplicacao> Aplicacao { get; set; }
         public DbSet<Execucao> Execucao { get; set; }
         public DbSet<Servico> Servico { get; set; }
-
-        public MonitorContext(DbContextOptions<MonitorContext> options) : base(options)
-        {
-
-        }
+        public MonitorContext(DbContextOptions<MonitorContext> options) : base(options){}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AplicacaoMapping());

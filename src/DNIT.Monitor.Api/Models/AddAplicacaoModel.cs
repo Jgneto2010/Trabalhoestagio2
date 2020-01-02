@@ -1,4 +1,7 @@
-﻿namespace DNIT.Monitor.Api.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace DNIT.Monitor.Api.Models
 {
     public class AddAplicacaoModel
     {

@@ -12,5 +12,6 @@ namespace Dominio.Interfaces
         Task<bool> Any(Guid id);
         Task<bool> Any(string nome);
         Task<Servico> Detalhar(Guid idServico);
+        Task<Guid> GetByName(string nome);
     }
 }

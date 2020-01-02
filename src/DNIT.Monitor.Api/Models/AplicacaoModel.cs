@@ -7,6 +7,6 @@ namespace DNIT.Monitor.Api.Models
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
-        public IEnumerable<ServicoDetalheModel> Servicos { get; set; }
+        public IEnumerable<ServicoModel> Servicos { get; set; }
     }
 }
