@@ -89,7 +89,7 @@ namespace DNIT.Monitor.Api.Controllers
     
         [HttpPost("{nomeAplicacao}/servicos/{nomeServico}/addExecucao")]
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, [FromServices]IAplicacaoRepositorio aplicacaoRepositorio,
-             string nomeServico, string nomeAplicacao, [FromBody]AddExecucaoModel addExecucaoModel)
+             string nomeAplicacao, string nomeServico, [FromBody]AddExecucaoModel addExecucaoModel)
         {
             if (!await aplicacaoRepositorio.Any(nomeAplicacao))
                 return NotFound();
