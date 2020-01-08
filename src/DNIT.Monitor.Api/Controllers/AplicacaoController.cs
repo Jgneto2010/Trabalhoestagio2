@@ -66,6 +66,9 @@ namespace DNIT.Monitor.Api.Controllers
         [Route("servicos/{idServico}/detalhar")]
         public async Task<IActionResult> GetDetailsServico([FromServices] IServicoRepositorio repositorio, [FromRoute]Guid idServico)
         {
+            if (!await repositorio.Any(idServico))
+                return NotFound();
+            
             var servicoEntidade = await repositorio.Detalhar(idServico);
 
             var servicoModel = new ServicoModel();
