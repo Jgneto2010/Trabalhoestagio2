@@ -44,5 +44,10 @@ namespace Infra.Repositorio
         {
             return DbSet.Select(selector).ToListAsync();
         }
+
+        public async Task<Aplicacao> GetByName(string nomeAplicacao)
+        {
+            return await DbSet.Include(x => x.Servicos).FirstOrDefaultAsync(x => x.Nome.ToLower() == nomeAplicacao.ToLower());
+        }
     }
 }

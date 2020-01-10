@@ -13,5 +13,8 @@ namespace Dominio.Interfaces
         Task<bool> Any(Guid id);
         Task<Aplicacao> Buscar(Guid id);
         Task<List<TResult>> ListAll<TResult>(Expression<Func<Aplicacao, TResult>> selector);
+
+        Task<Aplicacao> GetByName(string nomeAplicacao);
+
     }
 }

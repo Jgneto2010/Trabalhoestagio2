@@ -1,14 +1,11 @@
 ﻿using DNIT.Monitor.Api.Models;
 using Dominio.Entidades;
 using Dominio.Interfaces;
-using Infra.Repositorio;
 using Microsoft.AspNetCore.Mvc;
-using System;                               
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-
 
 namespace DNIT.Monitor.Api.Controllers
 {
@@ -17,22 +14,23 @@ namespace DNIT.Monitor.Api.Controllers
     public class AplicacoesController : Controller
     {
         public AplicacoesController() { }
+
         [HttpGet]
         [Route("{nomeAplicacao}")]
-        public async Task<IActionResult> Get([FromServices] IAplicacaoRepositorio repositorio, Guid id)
+        public async Task<IActionResult> Get([FromServices] IAplicacaoRepositorio repositorio, string nomeAplicacao)
         {
-            var result = await repositorio.Buscar(id);
-            if (result == null)
+            var result = await repositorio.GetByName(nomeAplicacao);
+
+            if (result == default)
                 return NotFound();
             
-            return Ok(new AplicacaoModel()
+            return Ok(new AplicacaoModel
             {
                 Id = result.Id,
                 Nome = result.Nome,
-                Servicos = result.Servicos.Select(x => new ServicoModel()
-                {
-                    Nome = x.Nome,
-                })
+                Servicos = result
+                    .Servicos
+                    .Select(x => new AplicacaoModel.ServicoAplicacaoModel { Id = x.Id, Nome = x.Nome}).ToList()
             });
         }
         [HttpGet]
@@ -59,7 +57,7 @@ namespace DNIT.Monitor.Api.Controllers
             var servico = new Servico(addServicomodel.Nome);
             await repositorio.AddServico(idAplicacao, servico);
             await repositorio.SaveChanges();
-            return Created($"api/aplicacoes/servicos/{servico.Id}/detalhar", new { servico.Id, servico.Nome });
+            return Created($"api/aplicacoes/{idAplicacao}/servicos/{servico.Id}/detalhar", new { servico.Id, servico.Nome });
         }
 
         [HttpGet]
@@ -67,12 +65,11 @@ namespace DNIT.Monitor.Api.Controllers
         public async Task<IActionResult> GetDetailsServico([FromServices] IServicoRepositorio repositorio, [FromRoute]Guid idServico)
         {
             if (!await repositorio.Any(idServico))
+            {
                 return NotFound();
-            
-            var servicoEntidade = await repositorio.Detalhar(idServico);
+            }
 
-            var servicoModel = new ServicoModel();
-            servicoModel.ListaExecucoes = new List<ExecucaoModel>();
+            var servicoEntidade = await repositorio.Detalhar(idServico);
 
             var execucoes = servicoEntidade.Execucoes.Select(execucao => new ExecucaoModel
             {
@@ -82,10 +79,14 @@ namespace DNIT.Monitor.Api.Controllers
                 Log = execucao.Log,
                 TextoStatus = Enum.GetName(typeof(Status), execucao.Status)
             });
-            servicoModel.ListaExecucoes = execucoes.ToList();
-            servicoModel.NomeAplicacao = servicoEntidade.Aplicacao.Nome;
-            servicoModel.Nome = servicoEntidade.Nome;
-            servicoModel.Id = servicoEntidade.Id;
+
+            var servicoModel = new ServicoModel
+            {
+                ListaExecucoes = execucoes.ToList(),
+                NomeAplicacao = servicoEntidade.Aplicacao.Nome,
+                Nome = servicoEntidade.Nome,
+                Id = servicoEntidade.Id
+            };
 
             return Ok(servicoModel);
         }
@@ -108,7 +109,9 @@ namespace DNIT.Monitor.Api.Controllers
                 Status = addExecucaoModel.Status,
                 IdServico = repositorio.GetByName(nomeServico).Result
             };
+
             await repositorio.AddExecucao(repositorio.GetByName(nomeServico).Result, execucao);
+
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/{nomeAplicacao}/servicos/{nomeServico}/execucoes/{execucao.Id}",
                 new { execucao.Id, execucao.Log, execucao.Status, execucao.DataInicio, execucao.DataFim });
