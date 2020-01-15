@@ -23,9 +23,9 @@ namespace Infra.Maps
                    .HasColumnType("datetime")
                    .IsRequired();
 
-            builder.Property(e => e.Log)
-                .HasColumnName("LOG")
-                   .HasColumnType("varchar(50)");
+            //builder.Property(e => e.Logs)
+            //    .HasColumnName("LOG")
+            //       .HasColumnType("varchar(50)");
 
             builder.Property(e => e.Status)
                     .HasColumnName("STATUS")
@@ -33,6 +33,7 @@ namespace Infra.Maps
 
             builder.Property(x => x.IdServico)
                 .HasColumnName("ID_SERVICO");
+            
 
             //builder.HasOne(x => x.Execucao)
             //    .WithMany(x => x.Servico)

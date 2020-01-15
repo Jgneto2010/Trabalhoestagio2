@@ -4,7 +4,6 @@ using Infra.Contextos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infra.Repositorio
@@ -43,6 +42,23 @@ namespace Infra.Repositorio
         {
             var result = await _contexto.Servico.FirstOrDefaultAsync(x => x.Nome == nome);
             return result.Id;
+        }
+
+        public Task<Execucao> GetExecucao(Guid idExecucao)
+        {
+            return _contexto.Execucao.FirstOrDefaultAsync(x => x.Id == idExecucao);
+        }
+
+        public Task<int> SalvarLogs(IEnumerable<Logging> logs)
+        {
+            _contexto.Logging.AddRange(logs);
+            return _contexto.SaveChangesAsync();
+        }
+
+        public Task<int> EditarExecucao(Execucao execucao)
+        {
+            _contexto.Entry(execucao).State = EntityState.Modified;
+            return _contexto.SaveChangesAsync();
         }
     }
 

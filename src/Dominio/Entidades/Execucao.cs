@@ -10,7 +10,7 @@ namespace Dominio.Entidades
         public DateTime DataInicio { get;  set; }
         public DateTime DataFim { get;  set; }
         public Status Status { get;  set; }
-        public string Log { get; set; }
+        public ICollection<Logging> Logs { get; set; }
         // erro de loop infinito
         [JsonIgnore]
         public Servico Servico { get; set; }

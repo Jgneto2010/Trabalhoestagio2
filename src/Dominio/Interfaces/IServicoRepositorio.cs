@@ -1,7 +1,6 @@
 ﻿using Dominio.Entidades;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Dominio.Interfaces
@@ -13,5 +12,8 @@ namespace Dominio.Interfaces
         Task<bool> Any(string nome);
         Task<Servico> Detalhar(Guid idServico);
         Task<Guid> GetByName(string nome);
+        Task<Execucao> GetExecucao(Guid idExecucao);
+        Task<int> SalvarLogs(IEnumerable<Logging> logs);
+        Task<int> EditarExecucao(Execucao execucao);
     }
 }
