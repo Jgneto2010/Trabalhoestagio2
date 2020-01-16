@@ -16,8 +16,8 @@ namespace DNIT.Monitor.Api.Models
         [JsonIgnore]
         public Status Status { get; set; }
         public string TextoStatus { get; set; }
-        //Testes
-        public ICollection<string> Logs { get; set; }
+        
+        public IEnumerable<Logging> Logs { get; set; }
        
     }
 

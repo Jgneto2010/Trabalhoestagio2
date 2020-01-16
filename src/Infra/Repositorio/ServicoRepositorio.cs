@@ -60,6 +60,8 @@ namespace Infra.Repositorio
             _contexto.Entry(execucao).State = EntityState.Modified;
             return _contexto.SaveChangesAsync();
         }
+
+        
     }
 
 }

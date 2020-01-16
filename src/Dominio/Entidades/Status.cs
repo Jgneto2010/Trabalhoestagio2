@@ -7,14 +7,13 @@ namespace Dominio.Entidades
 {
     public enum Status
     {
-        [Description("Criado")]
-        Criado = 0,
+        
         [Description("Executando")]
-        Executando = 1,
+        Executando = 0,
         [Description("Finalizado")]
-        Finalizado = 2,
+        Finalizado = 1,
         [Description("Erro")]
-        Erro = 3
+        Erro = 2
     }
 
     
