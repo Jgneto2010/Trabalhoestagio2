@@ -75,6 +75,7 @@ namespace DNIT.Monitor.Api.Controllers
             {
                 Id = execucao.Id,
                 DataInicio = execucao.DataInicio,
+                DataFim = execucao.DataFim,
                 TextoStatus = Enum.GetName(typeof(Status), execucao.Status)
             });
 
@@ -111,7 +112,7 @@ namespace DNIT.Monitor.Api.Controllers
 
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/{nomeAplicacao}/servicos/{nomeServico}/execucoes/{execucao.Id}",
-                new { execucao.Id, execucao.Status, execucao.DataInicio });
+                new { execucao.Id, execucao.DataInicio });
         }
 
         /// <summary>
