@@ -16,8 +16,15 @@ namespace Infra.Contextos
             modelBuilder.ApplyConfiguration(new AplicacaoMapping());
             modelBuilder.ApplyConfiguration(new ExecucaoMapping());
             modelBuilder.ApplyConfiguration(new ServicoMapping());
+            modelBuilder.ApplyConfiguration(new ServicoMapping());
             base.OnModelCreating(modelBuilder);
         }
-        
+
+        /*
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=Joao; Database = Mercado; User ID = sa; Password = garciajtc241188;");
+        }
+        */
     }
 }

@@ -86,7 +86,6 @@ namespace DNIT.Monitor.Api.Controllers
                 NomeAplicacao = servicoEntidade.Aplicacao.Nome,
                 Nome = servicoEntidade.Nome,
                 Id = servicoEntidade.Id
-                
             };
 
             return Ok(servicoModel);
