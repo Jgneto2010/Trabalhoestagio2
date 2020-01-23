@@ -7,6 +7,7 @@ namespace Dominio.Entidades
 {
     public enum Status
     {
+        
         [Description("Executando")]
         Executando = 0,
         [Description("Finalizado")]

@@ -28,10 +28,11 @@ namespace DNIT.Monitor.Api
             });
             services.AddScoped<IAplicacaoRepositorio, AplicacaoRepositorio>();
             services.AddScoped<IServicoRepositorio, ServicoRepositorio>();
+            
+            //Buscando ConnectionString Contida em AppSettings.json
             //services.AddDbContext<MonitorContext>(option =>
-            //option.UseSqlServer(Configuration.GetConnectionString("conn")));
-            services.AddDbContext<MonitorContext>(option =>
-            option.UseInMemoryDatabase("memory"));
+            //    option.UseSqlServer(Configuration.GetConnectionString("conn")));
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CGPLAN Services Monitor", Version = "v1" });

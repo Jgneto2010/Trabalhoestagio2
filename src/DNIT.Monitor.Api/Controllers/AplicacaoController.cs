@@ -34,9 +34,9 @@ namespace DNIT.Monitor.Api.Controllers
             });
         }
         [HttpGet]
-        public async Task<IEnumerable<AplicacaoModel>> Get([FromServices] IAplicacaoRepositorio repositorio)
+        public async Task<IEnumerable<ListAplicacaoModel>> Get([FromServices] IAplicacaoRepositorio repositorio)
         {
-            return await repositorio.ListAll(x => new AplicacaoModel { Id = x.Id, Nome = x.Nome });
+            return await repositorio.ListAll(x => new ListAplicacaoModel { Id = x.Id, Nome = x.Nome });
         }
         [HttpPost]
         [Route("addAplicacao")]
@@ -79,12 +79,14 @@ namespace DNIT.Monitor.Api.Controllers
                 TextoStatus = Enum.GetName(typeof(Status), execucao.Status)
             });
 
+
             var servicoModel = new ServicoModel
             {
                 ListaExecucoes = execucoes.ToList(),
                 NomeAplicacao = servicoEntidade.Aplicacao.Nome,
                 Nome = servicoEntidade.Nome,
                 Id = servicoEntidade.Id
+                
             };
 
             return Ok(servicoModel);
@@ -92,7 +94,7 @@ namespace DNIT.Monitor.Api.Controllers
 
         [HttpPost("{nomeAplicacao}/servicos/{nomeServico}/addExecucao")]
         public async Task<IActionResult> Post([FromServices]IServicoRepositorio repositorio, [FromServices]IAplicacaoRepositorio aplicacaoRepositorio,
-             string nomeAplicacao, string nomeServico, [FromBody]AddExecucaoModel addExecucaoModel)
+             string nomeAplicacao, string nomeServico)
         {
             if (!await aplicacaoRepositorio.Any(nomeAplicacao))
                 return NotFound();
@@ -111,7 +113,7 @@ namespace DNIT.Monitor.Api.Controllers
 
             await repositorio.SaveChanges();
             return Created($"api/aplicacoes/{nomeAplicacao}/servicos/{nomeServico}/execucoes/{execucao.Id}",
-                new { execucao.Id, execucao.DataInicio });
+                new { execucao.Id, execucao.Status, execucao.DataInicio });
         }
 
         /// <summary>
