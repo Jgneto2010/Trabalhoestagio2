@@ -16,6 +16,7 @@ namespace Infra.Contextos
             modelBuilder.ApplyConfiguration(new AplicacaoMapping());
             modelBuilder.ApplyConfiguration(new ExecucaoMapping());
             modelBuilder.ApplyConfiguration(new ServicoMapping());
+            modelBuilder.ApplyConfiguration(new LogMapping());
             base.OnModelCreating(modelBuilder);
         }
 

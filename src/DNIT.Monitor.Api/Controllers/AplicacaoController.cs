@@ -79,7 +79,6 @@ namespace DNIT.Monitor.Api.Controllers
                 TextoStatus = Enum.GetName(typeof(Status), execucao.Status)
             });
 
-
             var servicoModel = new ServicoModel
             {
                 ListaExecucoes = execucoes.ToList(),
