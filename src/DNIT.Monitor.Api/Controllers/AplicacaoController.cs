@@ -139,6 +139,7 @@ namespace DNIT.Monitor.Api.Controllers
 
             var loggins = logs.Select(x => new Logging
             {
+                IdExecucao = execucao.Id,
                 Hora = x.Hora,
                 Log = x.Log,
                 Tipo = (TipoLog)x.Tipo
